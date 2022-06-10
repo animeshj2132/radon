@@ -8,7 +8,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 
-mongoose.connect("mongodb+srv://functionup-cohort:G0Loxqc9wFEGyEeJ@cluster0.rzotr.mongodb.net/Pritesh8769811-DB?retryWrites=true&w=majority", {
+mongoose.connect("mongodb+srv://animesh:KNlVl9CDDcfmXfF0@cluster0.nrkqb.mongodb.net/?retryWrites=true&w=majority", {
     useNewUrlParser: true
 })
 .then( () => console.log("MongoDb is connected"))
@@ -21,7 +21,28 @@ app.use (
   }
   );
 
-app.use('/', route);
+  
+const middle= ( req, res, next)=> {
+
+    let presentDate = new Date()
+    let DateandTIme = (presentDate.getHours())+ ":" + (presentDate.getMinutes()) + ":" + (presentDate.getSeconds()) + " "
+    + (presentDate.getDate( )) + " " + (presentDate.getMonth(+1)) + " " + (presentDate.getFullYear())
+
+let IP =req.ip
+let URL = req.originalUrl
+console.log(`${DateandTIme}, ${IP}, ${URL}`)
+
+next()
+}
+
+
+module.exports.middle= middle
+
+
+
+app.use(middle);
+
+app.use("/", route)
 
 
 app.listen(process.env.PORT || 3000, function () {
